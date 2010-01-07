@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>Askii Tests</title>
+    
+    <script src="http://js.othermedia.com/helium.js"
+            type="text/javascript"></script>
+    
+    <script src="./packages.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+        require('Askii', function() {
+            var failures = [],
+                errors   = [],
+                count    = 0,
+                
+                tests = {
+                    'Test integer to character conversion': function() {
+                        return Askii.intToChar(32) === ' ';
+                    },
+                
+                    'Test character to integer conversion': function() {
+                        return Askii.charToInt(' ') === 32;
+                    },
+                    
+                    'Test control character detection': function() {
+                        return Askii.isControlChar('\b');
+                    },
+                    
+                    'Test control character name to integer conversion': function() {
+                        return Askii.getControlInt('DEL') === 127;
+                    }
+                };
+            
+            for (key in tests) {
+                count += 1;
+                
+                if (tests.hasOwnProperty(key)) {
+                    try {
+                        if (tests[key]() !== true) {
+                            failures.push(key);
+                        }
+                    } catch (e) {
+                        errors.push(e);
+                    }
+                }
+            }
+            
+            console.log('Askii test suite results:')
+            console.log(count + ' tests, ' + failures.length + ' failures,', errors.length + ' errors.');
+            
+            if (errors.length > 0) {
+                console.log('Errors:');
+                errors.forEach(function(error) {
+                    console.error(error);
+                });
+            }
+            
+            if (failures.length > 0) {
+                console.log('Failures:');
+                failures.forEach(function(failure) {
+                    console.log('> ' + failure);
+                });
+            }
+        });
+    </script>
+  </body>
+</html>
